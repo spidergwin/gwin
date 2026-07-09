@@ -472,7 +472,7 @@ fn largest_i32(list: &[i32]) -> &i32 { /* ... */ }
 fn largest_f64(list: &[f64]) -> &f64 { /* ... */ }
 \`\`\`
 
-Each version is fully specialized — no vtable lookups, no type erasure, no runtime dispatch. The generated assembly is identical to what you'd write by hand for each type.
+Each version is fully specialized — no vtable lookups, no type erasure, no runtime dispatch. The generated machine code is identical to what you'd write by hand for each type.
 
 ## Static vs Dynamic Dispatch
 

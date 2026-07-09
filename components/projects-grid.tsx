@@ -1,33 +1,55 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { Project } from "@/lib/github";
-import { IconBrandGithub, IconExternalLink, IconSearch, IconStar, IconCode } from "@tabler/icons-react";
+import React, { ReactElement, useState } from "react"
+import { Project } from "@/lib/github"
+import {
+  IconBrandGithub,
+  IconExternalLink,
+  IconSearch,
+  IconStar,
+  IconCode,
+} from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
 
 interface ProjectsGridProps {
-  initialProjects: Project[];
+  initialProjects: Project[]
+}
+
+type Id = "all" | "systems" | "web" | "others"
+
+type Tab = {
+  id: Id
+  label: string
 }
 
 export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "systems" | "web" | "others">("all");
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeTab, setActiveTab] = useState<Id>("all")
 
-  const filteredProjects = initialProjects.filter((p) => {
+  const projects = initialProjects || []
+  const filteredProjects = projects.filter((p) => {
+    if (!p) return false
     // 1. Check search query
     const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.language && p.language.toLowerCase().includes(searchQuery.toLowerCase()));
+      (p.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.description || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.language &&
+        p.language.toLowerCase().includes(searchQuery.toLowerCase()))
 
-    if (!matchesSearch) return false;
+    if (!matchesSearch) return false
 
     // 2. Check tab filters
-    const lang = p.language?.toLowerCase() || "";
+    const lang = p.language?.toLowerCase() || ""
     if (activeTab === "systems") {
-      return lang === "rust" || lang === "go" || lang === "c" || lang === "c++" || lang === "assembly";
+      return lang === "rust" || lang === "go" || lang === "c" || lang === "c++"
     }
     if (activeTab === "web") {
-      return lang === "typescript" || lang === "javascript" || lang === "html" || lang === "css";
+      return (
+        lang === "typescript" ||
+        lang === "javascript" ||
+        lang === "html" ||
+        lang === "css"
+      )
     }
     if (activeTab === "others") {
       return (
@@ -35,44 +57,46 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
         lang !== "go" &&
         lang !== "c" &&
         lang !== "c++" &&
-        lang !== "assembly" &&
+        lang !== "python" &&
         lang !== "typescript" &&
         lang !== "javascript" &&
         lang !== "html" &&
         lang !== "css"
-      );
+      )
     }
-    return true;
-  });
+    return true
+  })
+
+  const categories: Tab[] = [
+    { id: "all", label: "All Repositories" },
+    { id: "systems", label: "Systems (Rust/Go/C)" },
+    { id: "web", label: "Web (React/TS)" },
+    { id: "others", label: "Others" },
+  ]
 
   return (
     <div className="space-y-8">
       {/* Filters Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         {/* Search */}
         <div className="relative w-full md:w-80">
-          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <IconSearch className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-border rounded-lg bg-background text-foreground text-xs outline-none focus:border-foreground transition-colors"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-4 pl-9 text-xs text-foreground outline-none focus:border-foreground"
           />
         </div>
 
         {/* Categories */}
-        <div className="flex flex-wrap gap-1 p-1 bg-muted border border-border/50 rounded-lg w-full md:w-auto">
-          {[
-            { id: "all", label: "All Repositories" },
-            { id: "systems", label: "Systems (Rust/Go/C)" },
-            { id: "web", label: "Web (React/TS)" },
-            { id: "others", label: "Others" },
-          ].map((tab) => (
+        <div className="flex w-full flex-wrap gap-1 rounded-lg border border-border/50 bg-muted p-1 md:w-auto">
+          {categories.map((tab: Tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-1 md:flex-none text-xs font-semibold px-4 py-1.5 rounded-md uppercase tracking-wider transition-all select-none focus:outline-none cursor-pointer ${
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-1 cursor-pointer rounded-md px-4 py-1.5 text-xs font-semibold tracking-wider uppercase select-none focus:outline-none md:flex-none ${
                 activeTab === tab.id
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -86,25 +110,27 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
 
       {/* Grid */}
       {filteredProjects.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-border rounded-xl bg-card">
-          <IconCode className="size-8 text-muted-foreground mx-auto mb-2" />
-          <p className="text-sm font-semibold text-muted-foreground">No repositories match your criteria.</p>
+        <div className="rounded-xl border border-dashed border-border bg-card py-16 text-center">
+          <IconCode className="mx-auto mb-2 size-8 text-muted-foreground" />
+          <p className="text-sm font-semibold text-muted-foreground">
+            No repositories match your criteria.
+          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <div
               key={project.name}
-              className="group flex flex-col justify-between p-6 border border-border/80 bg-card rounded-xl transition-all duration-300 hover:border-foreground/40 hover:-translate-y-1 hover:shadow-lg relative overflow-hidden"
+              className="relative flex flex-col justify-between rounded-xl border border-border/80 bg-card p-6 transition-colors duration-200 hover:border-foreground/45"
             >
               <div className="space-y-4">
                 {/* Header */}
                 <div className="flex items-start justify-between">
-                  <h4 className="text-base font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                  <h4 className="text-base font-bold tracking-tight text-foreground">
                     {project.name}
                   </h4>
                   {project.stars > 0 && (
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground font-semibold bg-muted px-2 py-0.5 rounded">
+                    <div className="flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
                       <IconStar className="size-3 fill-amber-400 stroke-amber-400" />
                       <span>{project.stars}</span>
                     </div>
@@ -112,19 +138,21 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
                 </div>
 
                 {/* Description */}
-                <p className="text-xs text-muted-foreground leading-relaxed min-h-[4rem]">
+                <p className="min-h-16 text-xs leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
               </div>
 
               {/* Bottom Row */}
-              <div className="flex items-center justify-between pt-6 mt-6 border-t border-border/50">
+              <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-6">
                 {/* Language Tag */}
                 {project.language ? (
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                     <span
                       className="size-2 rounded-full"
-                      style={{ backgroundColor: project.languageColor || "#7b7b7b" }}
+                      style={{
+                        backgroundColor: project.languageColor || "#7b7b7b",
+                      }}
                     />
                     <span>{project.language}</span>
                   </div>
@@ -138,7 +166,7 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
+                    className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                     title="View GitHub Repository"
                   >
                     <IconBrandGithub className="size-4.5" />
@@ -148,7 +176,7 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
+                      className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                       title="Visit Live Deployment"
                     >
                       <IconExternalLink className="size-4.5" />
@@ -161,5 +189,5 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
         </div>
       )}
     </div>
-  );
+  )
 }

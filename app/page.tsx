@@ -3,8 +3,9 @@ import Link from "next/link"
 import { Header } from "@/components/header"
 import { UiTerminal } from "@/components/ui-terminal"
 import { ProjectsGrid } from "@/components/projects-grid"
-import { getPinnedProjects } from "@/lib/github"
+import { getPinnedProjects, getGitHubProfile } from "@/lib/github"
 import { getAllPosts } from "@/lib/blog-data"
+import { profileConfig } from "@/lib/config"
 import {
   IconCpu,
   IconDatabase,
@@ -13,34 +14,97 @@ import {
   IconBrandGithub,
   IconBrandLinkedin,
   IconMail,
+  IconBrandWhatsapp,
+  IconBrandTelegram,
+  IconGlobe,
+  IconTerminal,
+  IconCloud,
+  IconKey,
 } from "@tabler/icons-react"
 
 // Cache page for 1 hour to prevent constant API calling to GitHub during navigations
 export const revalidate = 3600
 
+function getContactIcon(iconName: string) {
+  switch (iconName) {
+    case "whatsapp":
+      return IconBrandWhatsapp
+    case "telegram":
+      return IconBrandTelegram
+    case "email":
+      return IconMail
+    case "linkedin":
+      return IconBrandLinkedin
+    case "github":
+      return IconBrandGithub
+    default:
+      return IconGlobe
+  }
+}
+
 export default async function Page() {
-  const githubProjects = await getPinnedProjects(
-    process.env.GITHUB_USERNAME || "spidergwin"
-  )
+  const username = process.env.GITHUB_USERNAME || "spidergwin"
+  const githubProjects = await getPinnedProjects(username)
+  const githubProfile = await getGitHubProfile(username)
   const blogPosts = (await getAllPosts()).slice(0, 3)
 
-  const services = [
-    {
-      icon: <IconCpu className="size-6 text-foreground" />,
-      title: "Systems Programming",
-      desc: "Developing high-performance, memory-safe, and concurrent tools and custom system applications in Rust, Go, and C. Experience building x86_64 kernels, interpreters, and compilers.",
-    },
-    {
-      icon: <IconAppWindow className="size-6 text-foreground" />,
-      title: "Full-Stack Engineering",
-      desc: "Creating robust web apps using Next.js, React, Node.js, and TypeScript. Designing fluid, accessible interfaces paired with solid server-side APIs and services.",
-    },
-    {
-      icon: <IconDatabase className="size-6 text-foreground" />,
-      title: "Backend Architecture",
-      desc: "Designing databases, memory caches, and microservices with PostgreSQL, Redis, and WebSockets. Focused on latency reduction, throughput, and clean interface integration.",
-    },
-  ]
+  const getSpecIcon = (title: string) => {
+    const lower = title.toLowerCase()
+    if (lower.includes("system") || lower.includes("kernel")) {
+      return (
+        <IconCpu className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (lower.includes("frontend")) {
+      return (
+        <IconAppWindow className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (lower.includes("backend")) {
+      return (
+        <IconDatabase className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (lower.includes("full-stack") || lower.includes("fullstack")) {
+      return (
+        <IconTerminal className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (
+      lower.includes("ai") ||
+      lower.includes("ml") ||
+      lower.includes("learning")
+    ) {
+      return (
+        <IconKey className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (lower.includes("mobile")) {
+      return (
+        <IconCloud className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    if (
+      lower.includes("web3") ||
+      lower.includes("blockchain") ||
+      lower.includes("solidity")
+    ) {
+      return (
+        <IconGlobe className="size-6 text-foreground transition-colors group-hover:text-background" />
+      )
+    }
+    return (
+      <IconTerminal className="size-6 text-foreground transition-colors group-hover:text-background" />
+    )
+  }
+
+  // Get deduplicated core skills from the specializations to show as core competencies tags
+  const competencyTags = Array.from(
+    new Set([
+      ...profileConfig.languages.map((l) => l.name.replace(/ \(.*\)/, "")),
+      ...profileConfig.specializations.flatMap((s) => s.skills),
+    ])
+  )
 
   return (
     <div className="flex min-h-screen scrollbar-thumb-secondary flex-col bg-background font-sans text-foreground transition-colors duration-300 selection:bg-foreground selection:text-background">
@@ -62,7 +126,7 @@ export default async function Page() {
               Software Engineer
             </div>
             <div className="mt-auto origin-left translate-x-2 rotate-270 whitespace-nowrap">
-              Joseph Godfrey
+              {githubProfile.name}
             </div>
           </div>
 
@@ -72,7 +136,7 @@ export default async function Page() {
             <div className="flex gap-12 select-none sm:gap-16">
               <div>
                 <h3 className="text-3xl font-light tracking-tight sm:text-4xl">
-                  5+
+                  {profileConfig.experienceYears}
                 </h3>
                 <p className="mt-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
                   Years of Experience
@@ -84,8 +148,8 @@ export default async function Page() {
                 </h3>
                 <p className="mt-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase hover:underline">
                   Startup (
-                  <Link href="https://last-minutes.vercel.app" target="_blank">
-                    Last Minutes
+                  <Link href={profileConfig.startupUrl} target="_blank">
+                    {profileConfig.startupName}
                   </Link>
                   )
                 </p>
@@ -93,27 +157,32 @@ export default async function Page() {
             </div>
 
             {/* Main Greeting Typography */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h1 className="text-7xl leading-none font-light tracking-tighter select-none sm:text-8xl md:text-9xl">
                 Hello
               </h1>
-              <p className="flex items-center gap-2 text-sm font-semibold text-muted-foreground sm:text-base">
-                <span className="inline-block h-px w-6 bg-muted-foreground" />
-                It&apos;s Joseph Godfrey AKA Gwin, a Software Engineer
-              </p>
+              <div className="space-y-4">
+                <p className="flex items-center gap-2 text-sm font-semibold text-muted-foreground sm:text-base">
+                  <span className="inline-block h-px w-6 bg-muted-foreground" />
+                  It&apos;s {githubProfile.name} AKA Gwin, a Software Engineer
+                </p>
+                <p className="max-w-xl border-l border-border/60 pl-8 text-sm leading-relaxed font-light text-muted-foreground">
+                  {githubProfile.bio}
+                </p>
+              </div>
             </div>
 
             {/* Quick action buttons */}
             <div className="flex flex-wrap gap-4 pt-4">
               <a
                 href="#portfolio"
-                className="rounded-full bg-primary px-6 py-3 text-xs font-bold tracking-wider text-primary-foreground uppercase transition-opacity hover:opacity-90"
+                className="rounded-full bg-primary px-6 py-3 text-xs font-bold tracking-wider text-primary-foreground uppercase transition-all duration-200 hover:opacity-90 hover:brightness-110"
               >
                 View Portfolio
               </a>
               <a
                 href="#contact"
-                className="rounded-full border border-border bg-card px-6 py-3 text-xs font-bold tracking-wider text-foreground uppercase transition-colors hover:bg-muted"
+                className="rounded-full border border-border bg-card px-6 py-3 text-xs font-bold tracking-wider text-foreground uppercase transition-all duration-200 hover:bg-muted"
               >
                 Get In Touch
               </a>
@@ -122,22 +191,22 @@ export default async function Page() {
 
           {/* Hero Image Container (Right Side) */}
           <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
-            <div className="group relative h-96 w-80 overflow-hidden sm:h-[420px] sm:w-[360px] lg:h-[530px] lg:w-[440px]">
+            <div className="group relative h-96 w-80 overflow-hidden rounded-2xl border border-border/40 sm:h-[420px] sm:w-[360px] lg:h-[530px] lg:w-[440px]">
               {/* Grayscale filter transition to show premium aesthetic on hover */}
               <Image
                 src="/gwinpronobg.png"
-                alt="Joseph Godfrey — Software Engineer"
+                alt={githubProfile.name}
                 fill
                 priority
-                className="object-cover object-top grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:grayscale-0 dark:brightness-90 dark:contrast-110"
+                className="object-cover object-top grayscale transition-all duration-700 ease-out group-hover:grayscale-0 dark:brightness-90 dark:contrast-110"
                 sizes="(max-width: 768px) 320px, (max-width: 1024px) 360px, 440px"
               />
               {/* Bottom gradient fade into background */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
             </div>
 
-            {/* Horizontal Scroll down label for mobile */}
-            <div className="absolute bottom-4 left-4 flex items-center gap-1 text-[9px] tracking-widest text-muted-foreground uppercase lg:hidden">
+            {/* Scroll down label for mobile */}
+            <div className="absolute bottom-4 left-4 flex animate-bounce items-center gap-1 text-[9px] tracking-widest text-muted-foreground uppercase lg:hidden">
               <span>Scroll down</span>
               <span>&darr;</span>
             </div>
@@ -151,11 +220,11 @@ export default async function Page() {
         className="border-b border-border/40 bg-card/30 px-6 py-20"
       >
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
+          <div className="space-y-4 lg:col-span-4">
             <h2 className="text-xs font-semibold tracking-[0.25em] text-muted-foreground uppercase">
               01 // About Me
             </h2>
-            <h3 className="mt-4 text-3xl leading-tight font-light tracking-tight text-foreground sm:text-4xl">
+            <h3 className="text-3xl leading-tight font-light tracking-tight text-foreground sm:text-4xl">
               Bridging the gap between low-level performance and elegant web
               systems.
             </h3>
@@ -167,13 +236,14 @@ export default async function Page() {
               software operates at every tier. My expertise spans systems-level
               programming—such as designing custom monolithic kernels, compiler
               toolchains, and memory schedulers—to architecture-heavy, fullstack
-              web interfaces utilizing cutting-edge Next.js patterns.
+              web interfaces utilizing cutting-edge Next.js and TanStack Start
+              patterns.
             </p>
             <p>
               Whether crafting high-performance CLI tools, coding socket
-              services in Go, or architecting modular design systems in React, I
-              focus on performance optimization, robust accessibility standards,
-              and clean developer experiences.
+              services in Go or Rust, or architecting modular design systems in
+              React, I focus on performance optimization, robust accessibility
+              standards, and clean developer experiences.
             </p>
 
             {/* Skill list tags */}
@@ -182,22 +252,10 @@ export default async function Page() {
                 Core Competencies
               </h4>
               <div className="flex flex-wrap gap-2">
-                {[
-                  "Rust",
-                  "Go",
-                  "TypeScript",
-                  "Next.js",
-                  "C/C++",
-                  "Kernel Dev",
-                  "Compiler Design",
-                  "TailwindCSS",
-                  "PostgreSQL",
-                  "Redis",
-                  "Docker",
-                ].map((skill) => (
+                {competencyTags.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-foreground"
+                    className="rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors duration-200 hover:border-foreground/30"
                   >
                     {skill}
                   </span>
@@ -219,7 +277,7 @@ export default async function Page() {
               Test my system right in the browser
             </h3>
             <p className="text-sm leading-loose text-muted-foreground">
-              To emphasize my systems background, I've built a simulated
+              To emphasize my systems background, I&apos;ve built a simulated
               command-line shell interface. Type commands like{" "}
               <code className="rounded bg-muted px-1.5 py-0.5 font-mono font-bold text-foreground">
                 neofetch
@@ -258,10 +316,10 @@ export default async function Page() {
               </h3>
             </div>
             <a
-              href="https://github.com/spidergwin"
+              href={`https://github.com/${username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest uppercase transition-opacity hover:opacity-75"
+              className="premium-transition inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest uppercase hover:opacity-75"
             >
               Explore all repositories <IconArrowRight className="size-4" />
             </a>
@@ -284,19 +342,31 @@ export default async function Page() {
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {services.map((svc) => (
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {profileConfig.specializations.map((spec) => (
               <div
-                key={svc.title}
-                className="space-y-4 rounded-xl border border-border bg-card/50 p-8 transition-colors hover:border-foreground/30"
+                key={spec.title}
+                className="group space-y-4 rounded-xl border border-border bg-card/50 p-8 transition-colors duration-200 hover:border-foreground/30"
               >
-                <div className="w-fit rounded-lg bg-muted p-3">{svc.icon}</div>
+                <div className="w-fit rounded-lg bg-muted p-3 transition-colors duration-200 group-hover:bg-foreground group-hover:text-background">
+                  {getSpecIcon(spec.title)}
+                </div>
                 <h4 className="text-lg font-bold text-foreground">
-                  {svc.title}
+                  {spec.title}
                 </h4>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  {svc.desc}
+                  {spec.description}
                 </p>
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {spec.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="rounded border border-border bg-background px-2 py-0.5 text-[9px] font-medium text-muted-foreground"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -320,40 +390,48 @@ export default async function Page() {
             </div>
             <Link
               href="/blog"
-              className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest uppercase transition-opacity hover:opacity-75"
+              className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest uppercase hover:opacity-75"
             >
               View All Articles <IconArrowRight className="size-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {blogPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="block"
-              >
-                <article className="group flex h-full flex-col justify-between rounded-xl border border-border/60 bg-card p-6 transition-colors hover:border-foreground/30">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
-                      <span>{post.date}</span>
-                      <span>{post.readTime}</span>
+          {blogPosts.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-border bg-card py-16 text-center">
+              <p className="text-sm font-semibold text-muted-foreground">
+                No articles published yet.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              {blogPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block"
+                >
+                  <article className="group flex h-full flex-col justify-between rounded-xl border border-border/60 bg-card p-6 transition-colors duration-200 hover:border-foreground/30">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+                        <span>{post.date}</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                      <h4 className="line-clamp-2 text-base font-bold text-foreground transition-colors group-hover:text-primary">
+                        {post.title}
+                      </h4>
+                      <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                        {post.snippet}
+                      </p>
                     </div>
-                    <h4 className="line-clamp-2 text-base font-bold text-foreground transition-colors group-hover:text-primary">
-                      {post.title}
-                    </h4>
-                    <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                      {post.snippet}
-                    </p>
-                  </div>
-                  <div className="mt-auto flex items-center gap-1 pt-6 text-xs font-bold text-foreground transition-opacity group-hover:opacity-75">
-                    <span>Read Article</span>
-                    <IconArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
+                    <div className="mt-auto flex items-center gap-1 pt-6 text-xs font-bold text-foreground transition-opacity group-hover:opacity-75">
+                      <span>Read Article</span>
+                      <IconArrowRight className="size-3.5 transition-transform" />
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -362,106 +440,52 @@ export default async function Page() {
         id="contact"
         className="bg-foreground px-6 py-24 text-background"
       >
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="space-y-6 lg:col-span-6">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12">
+          <div className="space-y-6 lg:col-span-5">
             <h2 className="text-[10px] font-semibold tracking-[0.25em] text-background/60 uppercase">
               06 // Get in Touch
             </h2>
             <h3 className="text-4xl leading-tight font-light tracking-tighter sm:text-5xl lg:text-6xl">
-              Let's create something extraordinary.
+              Let&apos;s create something extraordinary.
             </h3>
-            <p className="max-w-md text-xs leading-relaxed text-background/75 sm:text-sm">
+            <p className="max-w-md text-sm leading-relaxed text-background/75">
               Whether you need assistance building high-performance systems
-              utilities, a scalable web application, or want to hire me, drop me
-              a line or book a technical consultation call!
+              utilities, a scalable web application, or want to hire me, reach
+              out directly on these platforms. I typically respond within a few
+              hours!
             </p>
-            <div className="flex items-center gap-6 pt-4">
-              <a
-                href="https://github.com/spidergwin"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-background/10 p-2 transition-colors hover:bg-background/20"
-                title="GitHub"
-              >
-                <IconBrandGithub className="size-5 text-background" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/gwinofficial"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-background/10 p-2 transition-colors hover:bg-background/20"
-                title="LinkedIn"
-              >
-                <IconBrandLinkedin className="size-5 text-background" />
-              </a>
-              <a
-                href="mailto:gwinofficial1@gmail.com"
-                className="rounded-full bg-background/10 p-2 transition-colors hover:bg-background/20"
-                title="Email"
-              >
-                <IconMail className="size-5 text-background" />
-              </a>
-            </div>
           </div>
 
-          <div className="lg:col-span-6">
-            {/* Quick Contact Form inside the page */}
-            <form className="ml-auto max-w-md space-y-4 text-background">
-              <div className="space-y-1">
-                <label
-                  className="text-[10px] font-semibold tracking-wider text-background/60 uppercase"
-                  htmlFor="contact-name"
-                >
-                  Your Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  required
-                  placeholder="Jane Doe"
-                  className="w-full rounded-lg border border-background/20 bg-background/5 px-4 py-2.5 text-sm text-background transition-colors outline-none placeholder:text-background/40 focus:border-background/50"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label
-                  className="text-[10px] font-semibold tracking-wider text-background/60 uppercase"
-                  htmlFor="contact-email"
-                >
-                  Your Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  required
-                  placeholder="jane@example.com"
-                  className="w-full rounded-lg border border-background/20 bg-background/5 px-4 py-2.5 text-sm text-background transition-colors outline-none placeholder:text-background/40 focus:border-background/50"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label
-                  className="text-[10px] font-semibold tracking-wider text-background/60 uppercase"
-                  htmlFor="contact-msg"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="contact-msg"
-                  rows={4}
-                  required
-                  placeholder="Hello Joseph, I'd love to chat about a systems/fullstack role..."
-                  className="w-full resize-none rounded-lg border border-background/20 bg-background/5 px-4 py-2.5 text-sm text-background transition-colors outline-none placeholder:text-background/40 focus:border-background/50"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-4 w-full rounded-lg bg-background py-3 text-xs font-bold tracking-widest text-foreground uppercase transition-opacity hover:opacity-90"
-              >
-                Send Message
-              </button>
-            </form>
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              {profileConfig.contactLinks.map((link) => {
+                const Icon = getContactIcon(link.iconName)
+                return (
+                  <a
+                    key={link.platform}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between rounded-lg border border-background/15 bg-background/5 p-3 transition-colors duration-200 hover:border-background/35 hover:bg-background/10"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="rounded bg-background/10 p-2 transition-colors duration-200 group-hover:bg-background/20">
+                        <Icon className="size-4 text-background" />
+                      </div>
+                      <div>
+                        <span className="block text-[8px] font-semibold tracking-wider text-background/50 uppercase">
+                          {link.platform}
+                        </span>
+                        <h4 className="text-xs leading-tight font-bold text-background">
+                          {link.label}
+                        </h4>
+                      </div>
+                    </div>
+                    <IconArrowRight className="size-3.5 opacity-50 transition-opacity duration-200 group-hover:opacity-100" />
+                  </a>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -470,10 +494,26 @@ export default async function Page() {
       <footer className="border-t border-border/40 bg-muted/10 px-6 py-8 text-center text-xs text-muted-foreground">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
           <p>
-            &copy; {new Date().getFullYear()} Joseph Godfrey. All rights
+            &copy; {new Date().getFullYear()} {githubProfile.name}. All rights
             reserved.
           </p>
-          <p className="flex items-center gap-2"></p>
+          <div className="flex items-center gap-4">
+            {profileConfig.contactLinks.map((link) => {
+              const Icon = getContactIcon(link.iconName)
+              return (
+                <a
+                  key={link.platform}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  title={link.platform}
+                >
+                  <Icon className="size-4" />
+                </a>
+              )
+            })}
+          </div>
         </div>
       </footer>
     </div>

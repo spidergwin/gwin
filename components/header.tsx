@@ -5,12 +5,10 @@ import { useTheme } from "next-themes"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { IconSun, IconMoon, IconMenu2, IconX } from "@tabler/icons-react"
-import { BookCallModal } from "@/components/book-call-modal"
 
 export function Header() {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const [isBookModalOpen, setIsBookModalOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
 
@@ -45,7 +43,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-colors">
+      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background transition-colors">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           {/* Logo */}
           <Link
@@ -53,8 +51,10 @@ export function Header() {
             className="group flex items-center gap-2 focus:outline-none"
             aria-label="Home"
           >
-            <div className="relative flex h-8 items-center justify-center rounded-lg bg-foreground px-3.5 text-sm font-semibold tracking-wider text-background uppercase transition-transform group-hover:scale-105">
-              <span>Gwin</span>
+            <div className="relative flex h-8 items-center justify-center border-none px-3.5 text-sm font-semibold tracking-wider text-foreground uppercase transition-transform group-hover:scale-105">
+              <span className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest">
+                Gwin Dev.
+              </span>
               <div className="pointer-events-none absolute -inset-0.5 scale-110 rounded-lg border border-foreground opacity-0 transition-opacity group-hover:opacity-100" />
             </div>
           </Link>
@@ -96,10 +96,10 @@ export function Header() {
             )}
 
             <button
-              onClick={() => setIsBookModalOpen(true)}
+              onClick={() => scrollToSection("contact")}
               className="hidden cursor-pointer items-center gap-1 border-b-2 border-foreground pb-0.5 text-xs font-bold tracking-wider uppercase transition-opacity hover:opacity-75 focus:outline-none sm:inline-flex"
             >
-              Book A Call ↗
+              Contact ↗
             </button>
 
             {/* Mobile menu toggle */}
@@ -119,7 +119,7 @@ export function Header() {
 
         {/* Mobile Nav */}
         {mobileMenuOpen && (
-          <div className="space-y-3 border-t border-border/40 bg-background/95 px-6 py-4 backdrop-blur-md md:hidden">
+          <div className="space-y-3 border-t border-border/40 bg-background px-6 py-4 md:hidden">
             {navItems.map((item) => (
               <button
                 key={item.label}
@@ -137,22 +137,14 @@ export function Header() {
               Blog
             </Link>
             <button
-              onClick={() => {
-                setMobileMenuOpen(false)
-                setIsBookModalOpen(true)
-              }}
+              onClick={() => scrollToSection("contact")}
               className="block w-full py-2 text-left text-sm font-semibold tracking-wider text-foreground uppercase sm:hidden"
             >
-              Book A Call ↗
+              Contact ↗
             </button>
           </div>
         )}
       </header>
-
-      <BookCallModal
-        isOpen={isBookModalOpen}
-        onClose={() => setIsBookModalOpen(false)}
-      />
     </>
   )
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import { useTheme } from "next-themes"
+import { profileConfig } from "@/lib/config"
 
 interface CommandLog {
   input?: string
@@ -41,7 +42,7 @@ export function UiTerminal() {
     }
   }, [])
 
-  const { hardwareConcurrency, userAgent, deviceMemory, platform } = navigator
+  const { hardwareConcurrency, userAgent, deviceMemory, platform } = navigator as any
 
   useEffect(() => {
     scrollToBottom()
@@ -109,11 +110,8 @@ export function UiTerminal() {
         output = (
           <p className="leading-relaxed">
             Hi, I&apos;m{" "}
-            <strong className="text-white">Joseph Godfrey (Gwin)</strong>, a
-            Software Engineer based in Nigeria. I build performant systems,
-            fullstack web applications, and tools. I enjoy exploring compiler
-            design, monolithic kernel programming (Rust/x86_64), and modern web
-            architectures with React and Next.js.
+            <strong className="text-white">{profileConfig.name} (Gwin)</strong>, a
+            Software Engineer. I specialize in low-level systems programming, full-stack development, AI, mobile apps, and Web3 systems.
           </p>
         )
         break
@@ -121,18 +119,17 @@ export function UiTerminal() {
         output = (
           <div className="space-y-2">
             <div>
-              <strong className="text-amber-400">Languages:</strong> Rust, Go,
-              JavaScript (Typescript), C, Python, HTML/CSS
+              <strong className="text-amber-400">Languages:</strong>{" "}
+              {profileConfig.languages.map((l) => l.name).join(", ")}
             </div>
-            <div>
-              <strong className="text-emerald-400">
-                Frameworks & Libraries:
-              </strong>{" "}
-              Next.js, React, Node.js, Express, TailwindCSS, Actix-web, Gin
-            </div>
-            <div>
-              <strong className="text-purple-400">Tools & Infra:</strong> Git,
-              Docker, Linux, PostgreSQL, Redis, Vercel, LLVM
+            <div className="space-y-1">
+              <strong className="text-emerald-400">Specializations:</strong>
+              {profileConfig.specializations.map((spec) => (
+                <div key={spec.title} className="pl-4">
+                  <strong className="text-[#a1a1aa]">- {spec.title}:</strong>{" "}
+                  {spec.skills.join(", ")}
+                </div>
+              ))}
             </div>
           </div>
         )
@@ -140,37 +137,19 @@ export function UiTerminal() {
       case "contact":
         output = (
           <div className="space-y-1">
-            <div>
-              Email:{" "}
-              <a
-                href="mailto:gwinofficial1@gmail.com"
-                className="text-cyan-400 underline"
-              >
-                gwinofficial1@gmail.com
-              </a>
-            </div>
-            <div>
-              GitHub:{" "}
-              <a
-                href="https://github.com/spidergwin"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cyan-400 underline"
-              >
-                github.com/spidergwin
-              </a>
-            </div>
-            <div>
-              LinkedIn:{" "}
-              <a
-                href="https://www.linkedin.com/in/gwinofficial"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cyan-400 underline"
-              >
-                linkedin.com/in/gwinofficial
-              </a>
-            </div>
+            {profileConfig.contactLinks.map((link) => (
+              <div key={link.platform}>
+                {link.platform}:{" "}
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 underline"
+                >
+                  {link.url.startsWith("mailto:") ? link.url.replace("mailto:", "") : link.url.replace("https://", "")}
+                </a>
+              </div>
+            ))}
           </div>
         )
         break
@@ -264,8 +243,8 @@ _ | | |__| |
         output = (
           <span>
             <span className="text-red-400">
-              bash: {trimmed}: command not found
-            </span>{" "}
+              GwinSH: {trimmed}: command not found
+            </span>
             — type <span className="font-semibold text-amber-500">`help`</span>{" "}
             for available commands.
           </span>
@@ -320,7 +299,7 @@ _ | | |__| |
   return (
     <div
       onClick={handleTerminalClick}
-      className="flex h-80 w-full cursor-text flex-col overflow-hidden rounded-xl border border-[#2d2d30] bg-[#18181b] p-4 font-mono text-sm text-[#e4e4e7] shadow-2xl dark:border-[#1e1e24] dark:bg-[#0c0c0e]"
+      className="flex h-80 w-full cursor-text flex-col overflow-hidden rounded-xl border border-[#2d2d30] bg-[#18181b] p-4 font-mono text-sm text-[#e4e4e7] dark:border-[#1e1e24] dark:bg-[#0c0c0e]"
     >
       {/* Title bar */}
       <div className="mb-3 flex shrink-0 items-center justify-between border-b border-[#2d2d30] pb-3 select-none">
