@@ -1,12 +1,14 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "../prisma/generated/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 import pg from "pg"
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL
 
 if (!connectionString) {
-  console.error("[Seed] ERROR: DATABASE_URL environment variable is not set. Please set it in your .env file.");
-  process.exit(1);
+  console.error(
+    "[Seed] ERROR: DATABASE_URL environment variable is not set. Please set it in your .env file."
+  )
+  process.exit(1)
 }
 
 console.log(`[Seed] Initializing Prisma connection...`)
@@ -428,7 +430,8 @@ sys-mon demonstrates that systems programming and web development don't have to 
   },
   {
     slug: "zero-cost-abstractions-in-rust",
-    title: "Zero-Cost Abstractions in Rust: Generics, Traits, and Monomorphization",
+    title:
+      "Zero-Cost Abstractions in Rust: Generics, Traits, and Monomorphization",
     date: "January 8, 2026",
     readTime: "7 min read",
     category: "Systems",

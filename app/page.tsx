@@ -251,11 +251,11 @@ export default async function Page() {
               <h4 className="mb-4 text-xs font-bold tracking-wider text-foreground uppercase">
                 Core Competencies
               </h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {competencyTags.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors duration-200 hover:border-foreground/30"
+                    className="rounded-full border border-border bg-card px-2.5 py-1 text-[10px] font-semibold text-foreground transition-colors duration-200 hover:border-foreground/30"
                   >
                     {skill}
                   </span>
@@ -425,7 +425,7 @@ export default async function Page() {
                     </div>
                     <div className="mt-auto flex items-center gap-1 pt-6 text-xs font-bold text-foreground transition-opacity group-hover:opacity-75">
                       <span>Read Article</span>
-                      <IconArrowRight className="size-3.5 transition-transform" />
+                      <IconArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </article>
                 </Link>

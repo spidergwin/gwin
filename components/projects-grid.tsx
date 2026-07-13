@@ -86,7 +86,7 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-border bg-background py-2 pr-4 pl-9 text-xs text-foreground outline-none focus:border-foreground"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-4 pl-9 text-xs text-foreground outline-none transition-all focus:border-foreground focus:ring-1 focus:ring-foreground"
           />
         </div>
 
@@ -96,10 +96,10 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 cursor-pointer rounded-md px-4 py-1.5 text-xs font-semibold tracking-wider uppercase select-none focus:outline-none md:flex-none ${
+              className={`flex-1 cursor-pointer rounded-md px-4 py-1.5 text-[10px] font-bold tracking-wider uppercase select-none focus:outline-none md:flex-none transition-all duration-200 ${
                 activeTab === tab.id
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
               }`}
             >
               {tab.label}
@@ -138,7 +138,7 @@ export function ProjectsGrid({ initialProjects }: ProjectsGridProps) {
                 </div>
 
                 {/* Description */}
-                <p className="min-h-16 text-xs leading-relaxed text-muted-foreground">
+                <p className="line-clamp-3 min-h-16 text-xs leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
               </div>

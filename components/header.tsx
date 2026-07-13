@@ -51,11 +51,10 @@ export function Header() {
             className="group flex items-center gap-2 focus:outline-none"
             aria-label="Home"
           >
-            <div className="relative flex h-8 items-center justify-center border-none px-3.5 text-sm font-semibold tracking-wider text-foreground uppercase transition-transform group-hover:scale-105">
-              <span className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest">
+            <div className="relative flex h-8 items-center justify-center border-none px-3.5 text-sm font-semibold tracking-wider text-foreground uppercase">
+              <span className="inline-flex w-fit items-center gap-1.5 border-b border-foreground pb-0.5 text-xs font-bold tracking-widest transition-opacity duration-200 group-hover:opacity-80">
                 Gwin Dev.
               </span>
-              <div className="pointer-events-none absolute -inset-0.5 scale-110 rounded-lg border border-foreground opacity-0 transition-opacity group-hover:opacity-100" />
             </div>
           </Link>
 
