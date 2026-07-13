@@ -23,6 +23,7 @@ export interface ProfileConfig {
   experienceYears: string
   startupName: string
   startupUrl: string
+  portfolioUrl: string
   contactLinks: ContactLink[]
   languages: SkillLanguage[]
   specializations: Specialization[]
@@ -35,6 +36,7 @@ export const profileConfig: ProfileConfig = {
   experienceYears: "5+",
   startupName: "Last Minutes",
   startupUrl: "https://last-minutes.vercel.app",
+  portfolioUrl: "https://gwin-portfolio.vercel.app",
 
   // Easily editable contact links. Users can add/modify links here
   contactLinks: [

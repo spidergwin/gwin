@@ -3,484 +3,309 @@
 <head>
   <meta charset="UTF-8">
   <title>Joseph Godfrey - CV</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #1e293b;
-      --secondary: #475569;
-      --accent: #0f766e; /* Elegant teal */
-      --text: #334155;
-      --bg: #ffffff;
-      --border: #e2e8f0;
-      --light-bg: #f8fafc;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-      background-color: var(--bg);
-      line-height: 1.5;
-      padding: 40px;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #1e293b;
+      background: #fff;
+      line-height: 1.55;
+      padding: 48px 56px;
       width: 210mm;
       min-height: 297mm;
       margin: 0 auto;
     }
 
-    .header {
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 20px;
-      margin-bottom: 24px;
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
+    /* ── Header ── */
+    .header { margin-bottom: 28px; }
 
     h1 {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--primary);
-      letter-spacing: -0.025em;
-      text-transform: uppercase;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
     }
 
-    .title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
+    .subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 12px;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 11.5px;
+      color: #475569;
+    }
+
+    .contact-row a {
+      color: #475569;
+      text-decoration: none;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 20px 0;
+    }
+
+    /* ── Section titles ── */
+    h2 {
+      font-size: 12px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    /* ── Summary ── */
+    .summary {
+      font-size: 12.5px;
+      color: #334155;
+      line-height: 1.65;
+      margin-bottom: 4px;
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 6px 16px;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .skills-label {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .skills-value {
+      color: #475569;
+    }
+
+    /* ── Experience ── */
+    .entry { margin-bottom: 16px; }
+    .entry:last-child { margin-bottom: 0; }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .entry-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .entry-date {
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    .entry-company {
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .entry-bullets {
+      list-style: disc;
+      padding-left: 18px;
+      font-size: 12px;
+      color: #334155;
+    }
+
+    .entry-bullets li { margin-bottom: 3px; }
+
+    .entry-desc {
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
       margin-top: 4px;
     }
 
-    .contact-info {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
-      font-size: 12px;
-      color: var(--secondary);
-      text-align: right;
-    }
-
-    .contact-info a {
-      color: var(--secondary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .contact-info a:hover {
-      color: var(--accent);
-    }
-
-    .summary {
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 24px;
-      line-height: 1.6;
-      text-align: justify;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 24px;
-    }
-
-    .left-col {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    section {
-      page-break-inside: avoid;
-    }
-
-    h2 {
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--primary);
-      border-left: 3px solid var(--accent);
-      padding-left: 10px;
-      margin-bottom: 12px;
-    }
-
-    .skills-group {
-      margin-bottom: 12px;
-    }
-
-    .skills-group-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--secondary);
-      margin-bottom: 6px;
-      letter-spacing: 0.02em;
-    }
-
-    .skills-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .skill-tag {
-      font-size: 10.5px;
-      background-color: var(--light-bg);
-      border: 1px solid var(--border);
-      color: var(--primary);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 500;
-    }
-
-    .job {
-      margin-bottom: 16px;
-    }
-
-    .job:last-child {
-      margin-bottom: 0;
-    }
-
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 4px;
-    }
-
-    .job-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .job-company {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .job-date {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--secondary);
-      text-align: right;
-    }
-
-    .job-desc {
-      font-size: 11.5px;
-      color: var(--secondary);
-      margin-bottom: 6px;
-    }
-
-    .job-bullets {
-      list-style-type: square;
-      padding-left: 16px;
-      font-size: 11.5px;
-      color: var(--text);
-    }
-
-    .job-bullets li {
-      margin-bottom: 4px;
-    }
-
-    .project-card {
-      background-color: var(--light-bg);
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
-
-    .project-card:last-child {
-      margin-bottom: 0;
-    }
-
-    .project-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary);
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .project-links {
+    .tag {
       font-size: 10px;
       font-weight: 500;
-    }
-
-    .project-links a {
-      color: var(--accent);
-      text-decoration: none;
-      margin-left: 8px;
-    }
-
-    .project-desc {
-      font-size: 11px;
-      color: var(--secondary);
-      line-height: 1.4;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 8px;
-    }
-
-    .project-tag {
-      font-size: 9px;
-      background-color: #ffffff;
-      border: 1px solid var(--border);
-      padding: 2px 6px;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      padding: 2px 7px;
       border-radius: 3px;
-      color: var(--secondary);
     }
 
     @media print {
-      body {
-        padding: 0;
-        width: 100%;
-        min-height: 0;
-      }
-      @page {
-        size: A4 portrait;
-        margin: 15mm;
-      }
+      body { padding: 0; width: 100%; min-height: 0; }
+      @page { size: A4 portrait; margin: 18mm; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Header -->
   <div class="header">
-    <div class="header-top">
-      <div>
-        <h1>Joseph Godfrey</h1>
-        <div class="title">Systems &amp; Full-Stack Software Engineer</div>
+    <h1>Joseph Godfrey</h1>
+    <div class="subtitle">Full-Stack Web Developer &amp; Instructor</div>
+    <div class="contact-row">
+      <span><a href="mailto:gwinofficial1@gmail.com">gwinofficial1@gmail.com</a></span>
+      <span><a href="https://github.com/spidergwin">github.com/spidergwin</a></span>
+      <span><a href="https://linkedin.com/in/gwinofficial">linkedin.com/in/gwinofficial</a></span>
+      <span><a href="https://gwin-portfolio.vercel.app">gwin-portfolio.vercel.app</a></span>
+      <span><a href="https://wa.me/2349035653155">+234 903 565 3155</a></span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Summary -->
+  <section>
+    <h2>Summary</h2>
+    <p class="summary">
+      Full-stack web developer with 5+ years of experience building modern, scalable web applications using React, Next.js, TypeScript, and Node.js on the frontend, and Go, Rust, and Python on the backend. Passionate about writing clean, performant code and teaching others to do the same. Strong interest in systems engineering and low-level performance. Co-founder of a real-time web platform. Looking to bring my hands-on development experience and teaching ability to a Web Development Instructor role.
+    </p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Technical Skills -->
+  <section>
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+      <span class="skills-label">Frontend</span>
+      <span class="skills-value">React, Next.js, TypeScript, JavaScript, HTML/CSS, TailwindCSS, TanStack Start</span>
+
+      <span class="skills-label">Backend</span>
+      <span class="skills-value">Go, Rust, Node.js, Python, REST APIs, GraphQL, WebSockets, PostgreSQL, Redis, Prisma</span>
+
+      <span class="skills-label">Mobile</span>
+      <span class="skills-value">React Native, Expo</span>
+
+      <span class="skills-label">Tools &amp; Other</span>
+      <span class="skills-value">Git, Docker, CI/CD, Linux, Vercel, Accessibility (WCAG/ARIA)</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Experience -->
+  <section>
+    <h2>Experience</h2>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Co-Founder &amp; Full-Stack Developer</span>
+        <span class="entry-date">2024 &mdash; Present</span>
       </div>
-      <div class="contact-info">
-        <div>Email: <a href="mailto:gwinofficial1@gmail.com">gwinofficial1@gmail.com</a></div>
-        <div>LinkedIn: <a href="https://linkedin.com/in/gwinofficial" target="_blank">linkedin.com/in/gwinofficial</a></div>
-        <div>GitHub: <a href="https://github.com/spidergwin" target="_blank">github.com/spidergwin</a></div>
-        <div>WhatsApp: <a href="https://wa.me/2349035653155" target="_blank">+234 903 565 3155</a></div>
-        <div style="grid-column: span 2;">Portfolio: <a href="https://last-minutes.vercel.app" target="_blank">last-minutes.vercel.app</a></div>
+      <div class="entry-company">Last Minutes &mdash; Real-time event booking platform</div>
+      <ul class="entry-bullets">
+        <li>Built the entire full-stack web application using Next.js, TypeScript, Prisma, and PostgreSQL.</li>
+        <li>Developed a real-time WebSocket layer in Go for instant deal synchronization across clients.</li>
+        <li>Implemented responsive, accessible UI components and optimized frontend performance for mobile devices.</li>
+        <li>Set up CI/CD pipelines, containerized development workflows, and production deployments on Vercel.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Freelance Full-Stack Web Developer</span>
+        <span class="entry-date">2021 &mdash; 2024</span>
+      </div>
+      <div class="entry-company">Remote &mdash; Various clients</div>
+      <ul class="entry-bullets">
+        <li>Delivered production web applications for clients using React, Next.js, and TypeScript.</li>
+        <li>Built scalable backend APIs and data services in Go and Node.js with PostgreSQL and Redis.</li>
+        <li>Collaborated with designers to implement pixel-perfect, accessible UI from Figma mockups.</li>
+        <li>Mentored junior developers on React patterns, TypeScript best practices, and Git workflows.</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Projects -->
+  <section>
+    <h2>Selected Projects</h2>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Portfolio Website</span>
+        <span class="entry-date"><a href="https://gwin-portfolio.vercel.app" style="color:#64748b;text-decoration:none;">gwin-portfolio.vercel.app</a></span>
+      </div>
+      <div class="entry-desc">
+        Personal portfolio built with Next.js 16, TailwindCSS, and Prisma. Features a GitHub API integration that auto-syncs pinned repositories, a full technical blog with admin dashboard, an interactive terminal emulator, and dark/light theme support.
+      </div>
+      <div class="tags">
+        <span class="tag">Next.js</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">TailwindCSS</span>
+        <span class="tag">Prisma</span>
+        <span class="tag">PostgreSQL</span>
       </div>
     </div>
-  </div>
 
-  <div class="summary">
-    Performance-driven Systems and Full-Stack Software Engineer with over 5 years of professional experience bridging the gap between low-level hardware performance and elegant, highly-scalable web architectures. Co-founder of Last Minutes, a real-time event booking and local e-commerce platform. Deep expertise in writing low-level kernels and compilers in C and Rust, engineering real-time data ingestion systems in Go, and architecting fluid, responsive, fully accessible web user interfaces with React, Next.js, and TanStack Start. Proven track record of optimizing database layers, improving mobile runtime performance with React Native, and implementing automated AI workflows.
-  </div>
-
-  <div class="grid-container">
-    <!-- Left Column: Skills, Projects, Education -->
-    <div class="left-col">
-      <section>
-        <h2>Technical Skills</h2>
-        
-        <div class="skills-group" style="margin-top: 8px;">
-          <div class="skills-group-title">Programming Languages</div>
-          <div class="skills-list">
-            <span class="skill-tag">Rust</span>
-            <span class="skill-tag">Go</span>
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">Solidity</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">SQL</span>
-          </div>
-        </div>
-
-        <div class="skills-group">
-          <div class="skills-group-title">Systems &amp; Backend</div>
-          <div class="skills-list">
-            <span class="skill-tag">Kernel Development</span>
-            <span class="skill-tag">Compilers &amp; VMs</span>
-            <span class="skill-tag">Socket Programming</span>
-            <span class="skill-tag">WebSockets</span>
-            <span class="skill-tag">PostgreSQL</span>
-            <span class="skill-tag">Redis</span>
-            <span class="skill-tag">Prisma ORM</span>
-            <span class="skill-tag">REST / GraphQL APIs</span>
-          </div>
-        </div>
-
-        <div class="skills-group">
-          <div class="skills-group-title">Frontend &amp; Mobile</div>
-          <div class="skills-list">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">TanStack Start</span>
-            <span class="skill-tag">React Native / Expo</span>
-            <span class="skill-tag">TailwindCSS</span>
-            <span class="skill-tag">A11y (WCAG / Aria)</span>
-          </div>
-        </div>
-
-        <div class="skills-group">
-          <div class="skills-group-title">AI &amp; Web3</div>
-          <div class="skills-list">
-            <span class="skill-tag">LLMs / PyTorch</span>
-            <span class="skill-tag">Agentic Workflows</span>
-            <span class="skill-tag">Smart Contracts</span>
-            <span class="skill-tag">Hardhat / Foundry</span>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Featured Projects</h2>
-        
-        <div class="project-card">
-          <div class="project-title">
-            <span>rusty-kernel</span>
-            <span class="project-links">
-              <a href="https://github.com/spidergwin/rusty-kernel" target="_blank">GitHub</a>
-            </span>
-          </div>
-          <div class="project-desc">
-            A monolithic x86_64 kernel written from scratch in Rust. Features custom page table management, frame allocators, interrupt handling, and a cooperative scheduler.
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">Rust</span>
-            <span class="project-tag">x86_64</span>
-            <span class="project-tag">Paging</span>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-title">
-            <span>sys-mon</span>
-            <span class="project-links">
-              <a href="https://github.com/spidergwin/sys-mon" target="_blank">GitHub</a>
-            </span>
-          </div>
-          <div class="project-desc">
-            Ultra-lightweight Linux system monitor. Reads aggregates directly from <code>procfs</code> in Go and streams live metrics to a Next.js frontend over WebSockets.
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">Go</span>
-            <span class="project-tag">Next.js</span>
-            <span class="project-tag">WebSockets</span>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-title">
-            <span>antigravity-ui</span>
-            <span class="project-links">
-              <a href="https://github.com/spidergwin/antigravity-ui" target="_blank">GitHub</a>
-            </span>
-          </div>
-          <div class="project-desc">
-            An accessible and keyboard-navigable React design system implementing focus trapping, roving tabIndex, and live-region announcements.
-          </div>
-          <div class="project-tags">
-            <span class="project-tag">React</span>
-            <span class="project-tag">TailwindCSS</span>
-            <span class="project-tag">ARIA</span>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Education</h2>
-        <div class="job" style="margin-bottom: 0;">
-          <div class="job-header">
-            <div>
-              <span class="job-title" style="display: block;">B.Sc. in Computer Science</span>
-              <span class="job-company">State University</span>
-            </div>
-            <span class="job-date">Graduated 2021</span>
-          </div>
-        </div>
-      </section>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">sys-mon</span>
+        <span class="entry-date"><a href="https://github.com/spidergwin/sys-mon" style="color:#64748b;text-decoration:none;">github.com/spidergwin/sys-mon</a></span>
+      </div>
+      <div class="entry-desc">
+        Real-time system monitoring dashboard with a Go backend reading Linux metrics and streaming them over WebSockets to a Next.js + React frontend.
+      </div>
+      <div class="tags">
+        <span class="tag">Go</span>
+        <span class="tag">Next.js</span>
+        <span class="tag">WebSockets</span>
+        <span class="tag">React</span>
+      </div>
     </div>
 
-    <!-- Right Column: Professional Experience -->
-    <div class="right-col">
-      <section>
-        <h2>Professional Experience</h2>
-
-        <div class="job">
-          <div class="job-header">
-            <div>
-              <span class="job-title">Co-Founder &amp; Lead Systems Engineer</span>
-              <div class="job-company">Last Minutes</div>
-            </div>
-            <span class="job-date">2024 — Present<br><small>Remote</small></span>
-          </div>
-          <p class="job-desc">
-            Architected and launched a real-time event booking and localized e-commerce startup handling instant, location-based flash deal distributions.
-          </p>
-          <ul class="job-bullets">
-            <li>Designed a real-time socket-based deal synchronizer in Go, lowering data transit latency across client terminals to sub-100ms.</li>
-            <li>Built the full-stack system architecture using Next.js, Prisma, and PostgreSQL, optimizing indexes to handle peak traffic during flash drops.</li>
-            <li>Set up containerized dev workflows, CI/CD automated test pipelines, and localized server clusters.</li>
-            <li>Optimized mobile loading states and runtime interactions inside React Native/Expo client applications.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="job-header">
-            <div>
-              <span class="job-title">Software Engineer (Contract / Freelance)</span>
-              <div class="job-company">Various Clients &amp; Open Source</div>
-            </div>
-            <span class="job-date">2021 — 2024<br><small>Hybrid / Remote</small></span>
-          </div>
-          <p class="job-desc">
-            Delivered low-level system integrations, high-performance backends, and modular frontends for systems-focused and e-commerce companies.
-          </p>
-          <ul class="job-bullets">
-            <li>Built customized VM compilers in Go that compile abstract syntax trees (AST) directly into bytecode instructions.</li>
-            <li>Developed and audited smart contracts using Solidity, Foundry, and Hardhat, integrating decentralized transaction verification features.</li>
-            <li>Designed fully customized dashboard UI modules for data streaming platforms, keeping bundle sizes under budget.</li>
-            <li>Collaborated with design agencies to turn visual mocks into high-performance web applications using advanced styling, micro-interactions, and WebGL elements.</li>
-            <li>Refactored legacy codebases to TypeScript, improving system readability and developer output by 40%.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="job-header">
-            <div>
-              <span class="job-title">Software Engineering Intern</span>
-              <div class="job-company">Tech Systems Corp</div>
-            </div>
-            <span class="job-date">2020 — 2021<br><small>On-site</small></span>
-          </div>
-          <p class="job-desc">
-            Assisted senior engineers in maintaining backend microservices and implementing responsive UI dashboards.
-          </p>
-          <ul class="job-bullets">
-            <li>Wrote clean unit and integration tests in Go and Python, raising overall test coverage to 92%.</li>
-            <li>Refactored interactive UI components in React and refined utility styles for consistent browser cross-compatibility.</li>
-            <li>Helped optimize SQL query structures and database migration procedures.</li>
-          </ul>
-        </div>
-      </section>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">antigravity-ui</span>
+        <span class="entry-date"><a href="https://github.com/spidergwin/antigravity-ui" style="color:#64748b;text-decoration:none;">github.com/spidergwin/antigravity-ui</a></span>
+      </div>
+      <div class="entry-desc">
+        Accessible React component library built with TailwindCSS and Radix Primitives. Implements keyboard navigation, focus trapping, and screen reader support following WAI-ARIA patterns.
+      </div>
+      <div class="tags">
+        <span class="tag">React</span>
+        <span class="tag">TailwindCSS</span>
+        <span class="tag">Accessibility</span>
+        <span class="tag">Radix</span>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Education -->
+  <section>
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">B.Sc. Computer Science</span>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
