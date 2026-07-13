@@ -1,31 +1,31 @@
 export interface ContactLink {
-  platform: string;
-  url: string;
-  label: string;
-  iconName: string;
+  platform: string
+  url: string
+  label: string
+  iconName: string
 }
 
 export interface SkillLanguage {
-  name: string;
-  level?: string;
+  name: string
+  level?: string
 }
 
 export interface Specialization {
-  title: string;
-  description: string;
-  skills: string[];
+  title: string
+  description: string
+  skills: string[]
 }
 
 export interface ProfileConfig {
-  name: string;
-  username: string;
-  email: string;
-  experienceYears: string;
-  startupName: string;
-  startupUrl: string;
-  contactLinks: ContactLink[];
-  languages: SkillLanguage[];
-  specializations: Specialization[];
+  name: string
+  username: string
+  email: string
+  experienceYears: string
+  startupName: string
+  startupUrl: string
+  contactLinks: ContactLink[]
+  languages: SkillLanguage[]
+  specializations: Specialization[]
 }
 
 export const profileConfig: ProfileConfig = {
@@ -35,18 +35,18 @@ export const profileConfig: ProfileConfig = {
   experienceYears: "5+",
   startupName: "Last Minutes",
   startupUrl: "https://last-minutes.vercel.app",
-  
+
   // Easily editable contact links. Users can add/modify links here
   contactLinks: [
     {
       platform: "WhatsApp",
-      url: "https://wa.me/2349035653155", // Replace with preferred WhatsApp link
+      url: "https://wa.me/+2348130100842", // Replace with preferred WhatsApp link
       label: "WhatsApp",
       iconName: "whatsapp",
     },
     {
       platform: "Telegram",
-      url: "https://t.me/spidergwin", // Replace with preferred Telegram link
+      url: "https://t.me/GwinOfficial1", // Replace with preferred Telegram link
       label: "Telegram",
       iconName: "telegram",
     },
@@ -85,38 +85,79 @@ export const profileConfig: ProfileConfig = {
   specializations: [
     {
       title: "Frontend Development",
-      description: "Crafting highly performant, responsive, and beautifully animated user interfaces using React, Next.js, and modern CSS/Tailwind.",
-      skills: ["React", "Next.js", "TypeScript", "TailwindCSS", "CSS Animations"],
+      description:
+        "Crafting highly performant, responsive, and beautifully animated user interfaces using React, Next.js, and modern CSS/Tailwind.",
+      skills: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Framer Motion",
+      ],
     },
     {
       title: "Backend Development",
-      description: "Architecting scalable backend architectures, APIs, and microservices in Go, Rust, TypeScript, and Python.",
-      skills: ["Go", "Rust", "TypeScript", "Python", "PostgreSQL", "Redis", "WebSockets"],
+      description:
+        "Architecting scalable backend architectures, APIs, and microservices in Go, Rust, TypeScript, and Python.",
+      skills: [
+        "Go",
+        "Rust",
+        "TypeScript",
+        "Python",
+        "PostgreSQL",
+        "Redis",
+        "WebSockets",
+      ],
     },
     {
       title: "Full-Stack Development",
-      description: "Developing robust, modern full-stack web applications using Next.js and TanStack Start for optimal server/client coherence.",
-      skills: ["Next.js", "TanStack Start", "Prisma", "TypeScript", "SQL"],
+      description:
+        "Developing robust, modern full-stack web applications using Next.js and TanStack Start for optimal server/client coherence.",
+      skills: [
+        "Next.js",
+        "TanStack Start",
+        "Prisma",
+        "TypeScript",
+        "PostgreSQL",
+        "SQL",
+      ],
     },
     {
       title: "AI Development & Training",
-      description: "Building, training, and fine-tuning machine learning models and deploying intelligent agentic workflows using Python.",
-      skills: ["Python", "PyTorch", "Hugging Face", "LLMs", "Agentic Workflows"],
+      description:
+        "Building, training, and fine-tuning machine learning models and deploying intelligent agentic workflows using Python.",
+      skills: [
+        "Python",
+        "PyTorch",
+        "Hugging Face",
+        "LLMs",
+        "Agentic Workflows",
+      ],
     },
     {
       title: "Mobile App Development",
-      description: "Developing high-performance, responsive cross-platform mobile applications with React Native.",
+      description:
+        "Developing high-performance, responsive cross-platform mobile applications with React Native.",
       skills: ["React Native", "Expo", "TypeScript", "Mobile UI"],
     },
     {
       title: "Systems & Kernel Programming",
-      description: "Writing C and Rust to develop low-level system utilities, custom monolithic kernels, page schedulers, and compilers.",
-      skills: ["C", "Rust", "Go", "Compilers", "Kernel Dev"],
+      description:
+        "Writing C and Rust to develop low-level system utilities, custom monolithic kernels, page schedulers, and compilers.",
+      skills: ["C", "Rust"],
     },
     {
       title: "Web3 & Blockchain Development",
-      description: "Authoring, testing, and deploying secure smart contracts and decentralized applications on EVM networks using Solidity.",
-      skills: ["Solidity", "Web3", "Ethers.js", "Foundry", "Hardhat", "Smart Contracts"],
+      description:
+        "Authoring, testing, and deploying secure smart contracts and decentralized applications on EVM networks using Solidity.",
+      skills: [
+        "Solidity",
+        "Web3",
+        "Ethers.js",
+        "Foundry",
+        "Hardhat",
+        "Smart Contracts",
+      ],
     },
   ],
-};
+}
