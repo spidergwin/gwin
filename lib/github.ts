@@ -149,7 +149,7 @@ async function fetchGraphQL(
       bio: user.bio || "Software Engineer",
       location: user.location || "Nigeria",
       company: user.company || "Freelance",
-      websiteUrl: user.websiteUrl || profileConfig.startupUrl,
+      websiteUrl: user.websiteUrl || profileConfig.portfolioUrl,
     }
 
     const projects: Project[] = (user.pinnedItems?.nodes || [])
@@ -200,7 +200,7 @@ async function fetchProfileRest(
       bio: user.bio || "Software Engineer",
       location: user.location || "Nigeria",
       company: user.company || "Freelance",
-      websiteUrl: user.blog || profileConfig.startupUrl,
+      websiteUrl: user.blog || profileConfig.portfolioUrl,
     }
   } catch (error) {
     console.error("[GitHub REST Profile] Fetch exception:", error)
@@ -300,6 +300,6 @@ export async function getGitHubProfile(
     bio: "Software Engineer specializing in Systems, Backend, Fullstack, AI, Mobile, and Web3 development.",
     location: "Nigeria",
     company: "Freelance",
-    websiteUrl: profileConfig.startupUrl,
+    websiteUrl: profileConfig.portfolioUrl,
   }
 }
